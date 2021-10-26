@@ -74,8 +74,7 @@ html, body {
   // This is the logo at the top of the ToC
   .logo {
     display: block;
-    max-width: 100%;
-    margin-bottom: $logo-margin;
+    margin: $logo-margin;
   }
 
   &>.search {
@@ -273,7 +272,7 @@ html, body {
   .lang-selector {
     position: fixed;
     z-index: 50;
-    border-bottom: 5px solid $lang-select-active-bg;
+    border-bottom: 0px solid $lang-select-active-bg;
   }
 }
 
