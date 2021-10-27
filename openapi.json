@@ -1,0 +1,495 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Noldor API",
+      "version": "1.0.0",
+      "contact": {
+        "name": "Noldor",
+        "url": "https://www.noldor.com",
+        "email": "devops@noldor.com"
+      },
+      "description": "This is the Noldor API for sending data to and querying data from the Noldor platform."
+    },
+    "paths": {
+      "/v1/auth/client": {
+        "post": {
+          "operationId": "Authenticate",
+          "description": "Authenticate with service and retrieve an access token required for other API calls.",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "secret": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": "string",
+                      "secret": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "description": "",
+                    "type": "object",
+                    "properties": {
+                      "access_token": {
+                        "type": "string"
+                      },
+                      "expires": {
+                        "type": "string"
+                      },
+                      "refresh_token": {
+                        "type": "string"
+                      },
+                      "token_type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "access_token",
+                      "expires",
+                      "refresh_token",
+                      "token_type"
+                    ]
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "General"
+          ],
+          "parameters": [],
+          "security": []
+        },
+        "parameters": []
+      },
+      "/v1/mga": {
+        "get": {
+          "description": "List of available MGAs.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "mgaId": {
+                          "type": "string"
+                        },
+                        "mgaName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": [
+                        {
+                          "mgaId": "string",
+                          "mgaName": "string"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Querying"
+          ],
+          "operationId": "List MGAs",
+          "summary": ""
+        },
+        "parameters": []
+      },
+      "/v1/mga/{mga_id}/report": {
+        "get": {
+          "description": "List available reports for given MGA.",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "mga_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "createdUtcTime": {
+                          "type": "string"
+                        },
+                        "reportId": {
+                          "type": "string"
+                        },
+                        "reportName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": [
+                        {
+                          "createdUtcTime": "string",
+                          "reportId": "string",
+                          "reportName": "string"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "operationId": "List reports",
+          "tags": [
+            "Querying"
+          ]
+        }
+      },
+      "/v1/mga/{mga_id}/report/{report_id}/format": {
+        "get": {
+          "description": "List available formats for the given report.",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "report_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "mga_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": [
+                        "string"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "operationId": "List report formats",
+          "tags": [
+            "Querying"
+          ]
+        }
+      },
+      "/v1/mga/{mga_id}/report/{report_id}/format/{format_type}": {
+        "get": {
+          "description": "Get a URL to download the raw data dump of the report for the given format.",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "report_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "format_type",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "mga_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UrlResponse"
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": {
+                        "url": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "operationId": "Download report for format",
+          "tags": [
+            "Querying"
+          ]
+        }
+      },
+      "/v1/mga/{mga_id}/report/{report_id}/format/{format_type}/entities": {
+        "get": {
+          "description": "List available entities for the given report format.",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "report_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "format_type",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "mga_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": [
+                        "string"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "operationId": "List report format entities",
+          "tags": [
+            "Querying"
+          ]
+        }
+      },
+      "/v1/mga/{mga_id}/report/{report_id}/format/{format_type}/entities/{entity}": {
+        "get": {
+          "description": "Get a URL to download the raw data dump of the report for the given format and entity",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "report_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "format_type",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "mga_id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "entity",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "description": "Return a url to download the data in the given file type. Valid values are json, csv. Defaults to json",
+              "in": "query",
+              "name": "file_type",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UrlResponse"
+                  },
+                  "examples": {
+                    "example-1": {
+                      "value": {
+                        "url": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Querying"
+          ],
+          "operationId": "Download report for format entity"
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "UrlResponse": {
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          },
+          "type": "object",
+          "x-examples": {
+            "example-1": {
+              "url": "string"
+            }
+          }
+        }
+      },
+      "links": {},
+      "callbacks": {},
+      "securitySchemes": {
+        "JWTAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "description": ""
+        }
+      }
+    },
+    "security": [
+      {
+        "JWTAuth": []
+      }
+    ],
+    "servers": [
+      {
+        "url": "https://api.noldor.com",
+        "description": "Production"
+      },
+      {
+        "url": "https://api.nldrplayground.net",
+        "description": "Staging"
+      }
+    ],
+    "tags": [
+      {
+        "name": "General"
+      },
+      {
+        "name": "Querying"
+      },
+      {
+        "name": "Sending"
+      }
+    ]
+  }
