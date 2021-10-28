@@ -6,12 +6,22 @@ on:
   pull_request:
     branches: [ '*' ]
 
+env:
+  TEST_TAG: noldor/api-docs:test
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
 
     - name: Docker build
       uses: docker/build-push-action@v2
+      with:
+        tags: ${{ env.TEST_TAG }}
+        push: false
+
+    - name: Start Docker container and build web pages
+      run: docker run --rm -v ${{ github.workspace }}/build:/srv/slate/build ${{ env.TEST_TAG }} build
+
