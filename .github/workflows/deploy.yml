@@ -4,34 +4,24 @@ on:
   push:
     branches: [ 'main' ]
 
+env:
+  TEST_TAG: noldor/api-docs:test
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      ruby-version: 2.5
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
+
+    - name: Docker build
+      uses: docker/build-push-action@v2
       with:
-        ruby-version: ${{ env.ruby-version }}
+        tags: ${{ env.TEST_TAG }}
+        push: false
 
-    - uses: actions/cache@v2
-      with:
-        path: vendor/bundle
-        key: gems-${{ runner.os }}-${{ env.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          gems-${{ runner.os }}-${{ env.ruby-version }}-
-          gems-${{ runner.os }}-
-
-    - run: bundle config set deployment 'true'
-    - name: bundle install
-      run: |
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
-
-    - run: bundle exec middleman build
+    - name: Start Docker container and build web pages
+      run: docker run --rm -v ${{ github.workspace }}/build:/srv/slate/build ${{ env.TEST_TAG }} build
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
