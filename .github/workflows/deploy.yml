@@ -5,7 +5,7 @@ on:
     branches: [ 'main' ]
 
 env:
-  TEST_TAG: noldor/api-docs:test
+  TEST_TAG: noldor/${{ github.event.repository.name }}:test
 
 jobs:
   deploy:
