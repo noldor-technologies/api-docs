@@ -673,6 +673,44 @@
         ]
       }
     },
+    "/v1/ingestion/report/notify_upload": {
+      "post": {
+        "summary": "",
+        "operationId": "Notifies Noldor of a report upload",
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reportId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "reportId": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Sending"
+        ]
+      }
+    },
     "/v1/ingestion/sharing": {
       "put": {
         "summary": "",
