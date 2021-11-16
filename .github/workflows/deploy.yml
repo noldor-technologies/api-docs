@@ -8,7 +8,7 @@ env:
   TEST_TAG: noldor/${{ github.event.repository.name }}:test
 
 jobs:
-  deploy:
+  run:
     runs-on: ubuntu-latest
 
     steps:
